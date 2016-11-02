@@ -7,6 +7,7 @@
 #include <iostream>
 
 struct Sales_data {
+public:
     //构造函数
     Sales_data = default;
     Sales_data(const std::string &s): bookNo(s){ }
@@ -15,7 +16,7 @@ struct Sales_data {
     //功能函数    
     std::string isbn() const { return bookNo; }
     Sales_data& combine(const Sales_data&);
-    
+private:
     std::string bookNo;
     unsigned units_sold = 0;
     double revenue = 0.0;
