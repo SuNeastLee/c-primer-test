@@ -5,6 +5,10 @@
 #include<string>
 
 struct Person {
+    Person = default;
+    Person(const std::string sname, const std::string saddr): name(sname),address(saddr) { }
+    Person(std::istream &is){ read(is,*this); }
+    
     std::string getName() const { return name; }
     std::string getAddr() const { return address; }
     
