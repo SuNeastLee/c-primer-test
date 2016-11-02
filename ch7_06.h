@@ -7,7 +7,13 @@
 #include <iostream>
 
 struct Sales_data {
-    std::string isbn(){ return bookNo; };
+    //构造函数
+    Sales_data = default;
+    Sales_data(const std::string &s): bookNo(s){ }
+    Sales_data(const std::string &s, unsigned n, double p): bookNo(s), units_sold(n), revenue(p*n){ }
+    Sales_data(std::istream &is){ read(i,*this) }
+    //功能函数    
+    std::string isbn() const { return bookNo; }
     Sales_data& combine(const Sales_data&);
     
     std::string bookNo;
