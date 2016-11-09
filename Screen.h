@@ -4,8 +4,18 @@
 #include<iostream>
 #include<string>
 
+class Screen;
+class Window_mgr {
+public:
+    typedef std::vector<Screen>::size_type ScreenIndex;
+    inline void clear(ScreenIndex);
+private:
+    std::vector<Screen> screens { Screen(24,80, ' ') };
+};
+
 class Screen {
 public:
+    friend void Window_mgr::clear(ScreenIndex);
     typedef std::string::size_type pos;
     
     //structure function
@@ -22,6 +32,7 @@ public:
     inline Screen set(pos hi, pos wd, char c){ contents[hi*width + wd] = c; return *this; }
     Screen &display(std::ostream os){ do_display(os); return *this; }
     const Screen display(){ do_display(os); return *this; }
+    
 private:
     pos cursor = 0;
     pos height = 0, width = 0;
@@ -30,11 +41,12 @@ private:
     Screen do_display(std::ostream &os) const {os << contents;} 
 };
 
-class Window_mgr {
-private:
-    std::vector<Screen> screens { Screen(24,80, ' ') };
-};
-
+inline void Window_mgr::clear(ScreenIndex i)
+{
+    if(i >= screens.size()) return;
+    Screen &s = screens[i];
+    s.contents = std::string(s.height * s.width, ' ');
+}
 
 inline
 Screen& Screen::move(pos r, pos c)
@@ -43,11 +55,13 @@ Screen& Screen::move(pos r, pos c)
     cursor = row + c;
     return *this;
 }
+
 char Screen::get(pos hi, pos wi) const
 {
     pos row = r * width;
     return contents[row + c];
 }
+
 void Screen::some_member() const
 {
     ++access_ctr;
